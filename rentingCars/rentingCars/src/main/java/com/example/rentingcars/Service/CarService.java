@@ -16,6 +16,10 @@ public class CarService {
         return carRepository.findAll();
     }
     public void addCar(Car car){
+
+        carRepository.save(car);
+        Boolean rew =false;
+        car.setIsChecked(rew);
         carRepository.save(car);
     }
     public void updateCar(Integer id,Car car){

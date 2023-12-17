@@ -21,6 +21,9 @@ public class EmployeeService {
 
     public void addEmployee(Employee employee) {
         employeeRepository.save(employee);
+        Boolean tcheck =false;
+        employee.setIsApproved(tcheck);
+        employeeRepository.save(employee);
     }
 
     public void updateEmployee(Integer id, Employee employee) {
