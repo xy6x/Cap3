@@ -30,72 +30,29 @@ public class RentalService {
     }
 
 
-    public void addRenTal(RentalDTO rentalDTO) {
 
+    public void addRenTal(RentalDTO rentalDTO) {
+        double tot=0;
         Car car = carRepository.findCarById(rentalDTO.getCar_id());
         User user = userRepository.findUserById(rentalDTO.getUser_id());
         if (car == null || user == null) {
             throw new ApiException("car id or user id not found");
         }
-        Rental rental = new Rental(null, rentalDTO.getDuration(), rentalDTO.getDur(), rentalDTO.getTotal_price(), user, car);
-        rentalRepository.save(rental);
         if (car.getCurrentStatus().equals("Available")) {
             if (rentalDTO.getDur().equals("hour")) {
-                double num = car.getHourly_price() * rentalDTO.getDuration();
-                rental.setTotal_price(num);
-                rentalRepository.save(rental);
+                tot= car.getHourly_price() * rentalDTO.getDuration();
 
-                carRepository.save(car);
-
-                if (user.getBalance() >= num) {
+                if (user.getBalance() >= tot) {
                     car.setCurrentStatus("Rented");
                     car.setAuthorized(rentalDTO.getCar_id());
-                    user.setBalance(user.getBalance() - num);
+                    user.setBalance(user.getBalance() - tot);
                     userRepository.save(user);
-
-                }
-                else throw new ApiException("brice not hour ");
+                }else throw new ApiException("brice not hour ");
             }
-        }
-        if (car.getCurrentStatus().equals("Available")) {
+
+
             if (rentalDTO.getDur().equals("day")) {
-                double total = car.getDaily_price() * rentalDTO.getDuration();
-                rental.setTotal_price(total);
-                rentalRepository.save(rental);
-
-                carRepository.save(car);
-                if (user.getBalance() >= total) {
-                    car.setCurrentStatus("Rented");
-                    car.setAuthorized(rentalDTO.getCar_id());
-                    user.setBalance(user.getBalance() - total);
-                    userRepository.save(user);
-
-                } else throw new ApiException("brice not the day ");
-            }
-        }
-        if (car.getCurrentStatus().equals("Available")) {
-            if (rentalDTO.getDur().equals("week")) {
-                double tota = car.getWeekly_price() * rentalDTO.getDuration();
-                rental.setTotal_price(tota);
-                rentalRepository.save(rental);
-
-
-                if (user.getBalance() >= tota) {
-                    car.setCurrentStatus("Rented");
-                    car.setAuthorized(rentalDTO.getCar_id());
-                    user.setBalance(user.getBalance() - tota);
-                    userRepository.save(user);
-
-
-                } else throw new ApiException("brice not the week ");
-            }
-        }
-
-        if (car.getCurrentStatus().equals("Available")) {
-            if (rentalDTO.getDur().equals("Month")) {
-                double tot = car.getMonthly_price() * rentalDTO.getDuration();
-                rental.setTotal_price(tot);
-                rentalRepository.save(rental);
+                tot = car.getDaily_price() * rentalDTO.getDuration();
 
                 if (user.getBalance() >= tot) {
                     car.setCurrentStatus("Rented");
@@ -103,15 +60,44 @@ public class RentalService {
                     user.setBalance(user.getBalance() - tot);
                     userRepository.save(user);
 
-                } else throw new ApiException("brice not the month");
+
+                } else throw new ApiException("brice not the day ");
+
             }
 
 
-        }
-        else throw new ApiException("the car not Available ");
+            if (rentalDTO.getDur().equals("week")) {
+                tot = car.getWeekly_price() * rentalDTO.getDuration();
 
-    }
-    public void updateRental(Integer id,RentalDTO rentalDTO){
+
+                if (user.getBalance() >= tot) {
+                    car.setCurrentStatus("Rented");
+                    car.setAuthorized(rentalDTO.getCar_id());
+                    user.setBalance(user.getBalance() - tot);
+                    userRepository.save(user);
+
+                } else throw new ApiException("brice not the week ");
+            }
+
+            if (rentalDTO.getDur().equals("Month")) {
+                tot = car.getMonthly_price() * rentalDTO.getDuration();
+
+                if (user.getBalance() >= tot) {
+                    car.setCurrentStatus("Rented");
+                    car.setAuthorized(rentalDTO.getCar_id());
+                    user.setBalance(user.getBalance() - tot);
+                    userRepository.save(user);
+
+                } else throw new ApiException("brice not the month ");
+            }
+
+        } else throw new ApiException("the car  not Available ");
+
+
+        Rental rental = new Rental(null, rentalDTO.getDuration(), rentalDTO.getDur(), tot, user, car);
+        rentalRepository.save(rental);
+
+    }    public void updateRental(Integer id,RentalDTO rentalDTO){
         Rental oldRental =rentalRepository.findRentalById(id);
         if (oldRental == null) {
             throw new ApiException("the Rental not found");
@@ -159,7 +145,6 @@ public class RentalService {
             oldCar.setConditions(conditions);
             carRepository.save(oldCar);
         }
-
     }
 public  void  accidentCar(Integer rental_id ,Integer car_id,String location, String conditions, Integer newCar_id){
         Rental rental =rentalRepository.findRentalById(rental_id);
@@ -184,8 +169,7 @@ public  void  accidentCar(Integer rental_id ,Integer car_id,String location, Str
 
 
     }
-
-}
+     }
     }
 
 

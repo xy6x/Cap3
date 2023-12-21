@@ -85,13 +85,32 @@ public class EmployeeService {
         if (employee == null) {
             throw new ApiException("the id not found ");
         }
-        if (employee.getCountOfCarsInspected()>29){
-            employee.setTotalCars(employee.getTotalCars()+employee.getCountOfCarsInspected());
-            employee.setBonus(employee.getBonus()+50);
-            employee.setCountOfCarsInspected(0);
-            employeeRepository.save(employee);
+        if (employee.getLevel().equals("beginner")) {
+            if (employee.getCountOfCarsInspected() > 29) {
+                employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
+                employee.setBonus(employee.getBonus() + 50);
+                employee.setCountOfCarsInspected(0);
+                employeeRepository.save(employee);
+            }
         }
-    }
+            if (employee.getLevel().equals("advanced")) {
+                if (employee.getCountOfCarsInspected() > 29) {
+                    employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
+                    employee.setBonus(employee.getBonus() + 60);
+                    employee.setCountOfCarsInspected(0);
+                    employeeRepository.save(employee);
+                }
+            }
+                if (employee.getLevel().equals("expert")) {
+                    if (employee.getCountOfCarsInspected() > 29) {
+                        employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
+                        employee.setBonus(employee.getBonus()+70);
+                        employee.setCountOfCarsInspected(0);
+                        employeeRepository.save(employee);
+                    }
+                }
+        }
+
 
     public void  CechOCar(Integer emp_id ,Integer car_id,String loc,String con){
 

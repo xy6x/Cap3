@@ -64,6 +64,12 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }
+    @PutMapping("/def/{emp_id}/{car_id}")
+    public ResponseEntity defectCar(@PathVariable Integer emp_id,@PathVariable Integer car_id){
+        employeeService.defectCar(emp_id, car_id);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+
+    }
 
 
 

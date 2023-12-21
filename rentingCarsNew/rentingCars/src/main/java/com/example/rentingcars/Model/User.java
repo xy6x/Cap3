@@ -32,7 +32,7 @@ public class User {
     private String name;
     @NotEmpty(message = "please enter phone number ")
     @Column(columnDefinition = "varchar(35) not null")
-    private Integer phone_number;
+    private String phone_number;
     @NotNull(message = "please enter your age")
     @Column(columnDefinition = "int")
     private Integer age;

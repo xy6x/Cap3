@@ -107,6 +107,10 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.OK).body(carService.listCar(date, dat));
 
     }
+@GetMapping("/brice/{min}/{max}/{duration}")
+    public ResponseEntity briceCar(@PathVariable Integer min ,@PathVariable Integer max ,@PathVariable String duration){
+        return ResponseEntity.status(HttpStatus.OK).body(carService.briceCar(min, max, duration));
+    }
 
 
 
