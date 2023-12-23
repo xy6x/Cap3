@@ -43,14 +43,14 @@ public class AdminController {
     }
 
 
-    @PutMapping("/employeeCheck/{admin_id}/{employee_id}")
-    public ResponseEntity employeeCheck(@PathVariable Integer admin_id, @PathVariable Integer employee_id){
-        adminService.employeeCheck(admin_id,employee_id);
-        return ResponseEntity.status(HttpStatus.OK).body("employee Check");
+    @PutMapping("/verifyEmployee/{admin_id}/{employee_id}")
+    public ResponseEntity verifyEmployee(@PathVariable Integer admin_id, @PathVariable Integer employee_id){
+        adminService.verifyEmployee(admin_id,employee_id);
+        return ResponseEntity.status(HttpStatus.OK).body("employee has been verified successfully");
     }
     @PutMapping("/assign/{admin_id}/{emp_id}")
     public ResponseEntity assign(@PathVariable Integer admin_id,@PathVariable Integer emp_id){
         adminService.assignAdminToEmployee(admin_id, emp_id);
-        return ResponseEntity.status(HttpStatus.OK).body("employee assign ");
+        return ResponseEntity.status(HttpStatus.OK).body("employee assign");
     }
 }

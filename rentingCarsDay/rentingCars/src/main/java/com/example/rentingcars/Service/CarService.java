@@ -170,10 +170,13 @@ private final ReviewRepository reviewRepository;
         if (car == null || employee == null) {
             throw new ApiException("car id or employee id incorrect");
         }
-        car.setIsChecked(true);
-        employee.setCountOfCarsInspected(employee.getCountOfCarsInspected() + 1);
-        carRepository.save(car);
-        employeeRepository.save(employee);
+        if (employee.getIsApproved().equals(true)) {
+            car.setIsChecked(true);
+            employee.setCountOfCarsInspected(employee.getCountOfCarsInspected() + 1);
+            carRepository.save(car);
+            employeeRepository.save(employee);
+        }else throw new ApiException("the employee not Approved");
+
     }
 
 

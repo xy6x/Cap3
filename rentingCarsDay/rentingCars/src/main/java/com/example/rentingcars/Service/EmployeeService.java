@@ -83,36 +83,39 @@ public class EmployeeService {
     }
 
 
-
     public void bonusEmployee(Integer id){
         Employee employee =employeeRepository.findEmployeeById(id);
         if (employee == null) {
             throw new ApiException("the id not found ");
         }
-        if (employee.getLevel().equals("beginner")) {
-            if (employee.getCountOfCarsInspected() > 29) {
-                employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
-                employee.setBonus(employee.getBonus() + 50);
-                employee.setCountOfCarsInspected(0);
-                employeeRepository.save(employee);
+        if (employee.getIsApproved().equals(true)) {
+
+            if (employee.getLevel().equals("beginner")) {
+                if (employee.getCountOfCarsInspected() > 29) {
+                    employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
+                    employee.setBonus(employee.getBonus() + 50);
+                    employee.setCountOfCarsInspected(0);
+                    employeeRepository.save(employee);
+                }else throw new ApiException("the getCountOfCarsInspected >30 ");
             }
+            if (employee.getLevel().equals("advanced")) {
+                if (employee.getCountOfCarsInspected() > 29) {
+                    employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
+                    employee.setBonus(employee.getBonus() + 60);
+                    employee.setCountOfCarsInspected(0);
+                    employeeRepository.save(employee);
+                }else throw new ApiException("the getCountOfCarsInspected >30 ");
         }
-        if (employee.getLevel().equals("advanced")) {
-            if (employee.getCountOfCarsInspected() > 29) {
-                employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
-                employee.setBonus(employee.getBonus() + 60);
-                employee.setCountOfCarsInspected(0);
-                employeeRepository.save(employee);
+            if (employee.getLevel().equals("expert")) {
+                if (employee.getCountOfCarsInspected() > 29) {
+                    employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
+                    employee.setBonus(employee.getBonus() + 70);
+                    employee.setCountOfCarsInspected(0);
+                    employeeRepository.save(employee);
+                }else throw new ApiException("the getCountOfCarsInspected >30 ");
+
             }
-        }
-        if (employee.getLevel().equals("expert")) {
-            if (employee.getCountOfCarsInspected() > 29) {
-                employee.setTotalCars(employee.getTotalCars() + employee.getCountOfCarsInspected());
-                employee.setBonus(employee.getBonus()+70);
-                employee.setCountOfCarsInspected(0);
-                employeeRepository.save(employee);
-            }
-        }
+        }else throw new ApiException("the employee not Approved");
 
     }
 
@@ -128,27 +131,28 @@ public class EmployeeService {
             throw new ApiException("the Car id not Found");
         }
         car.setConditions(condition);
-        if (car.getConditions().equals(car.getConditions())){
+        if (car.getConditions().equals(car.getConditions())&&employee.getIsApproved().equals(true)){
             car.setCurrentStatus("Available");
             car.setLocation(location);
             carRepository.save(car);
             employee.setCountOfCarsInspected(employee.getCountOfCarsInspected()+1);
             employeeRepository.save(employee);
-        }
-        throw new ApiException("the car");
+        } throw new ApiException("the employee not Approved");
     }
 
     public void  promotionEmployee(Integer id){
         Employee employee =employeeRepository.findEmployeeById(id);
-        if (employee == null) {
-            throw new ApiException("the id employee not found");
-        }
-        if (employee.getTotalCars()>=90 && employee.getTotalCars()<=180) {
-            employee.setLevel("advanced");
-        }
-        if (employee.getTotalCars()>=181&& employee.getTotalCars()<=280) {
-            employee.setLevel("expert");
-        }
+       if (employee.getIsApproved().equals(true)) {
+           if (employee == null) {
+               throw new ApiException("the id employee not found");
+           }
+           if (employee.getTotalCars() >= 90 && employee.getTotalCars() <= 180) {
+               employee.setLevel("advanced");
+           }
+           if (employee.getTotalCars() >= 181 && employee.getTotalCars() <= 280) {
+               employee.setLevel("expert");
+           }
+       }
     }
     public void defectCar(Integer emp_id,Integer car_id){
         Employee employee =employeeRepository.findEmployeeById(emp_id);
@@ -159,10 +163,11 @@ public class EmployeeService {
         if (car == null) {
             throw new ApiException("the id car not found");
         }
-        if (car.getConditions().equals("defect")){
+        if (car.getConditions().equals("defect")&& employee.getIsApproved().equals(true)){
             car.setConditions("Intact");
             carRepository.save(car);
-        }
+        } throw new ApiException("the employee not Approved");
+
     }
 
     public void assignSuper(Integer eId , Integer sId){
@@ -172,9 +177,11 @@ Employee su =employeeRepository.findEmployeeById(sId);
             throw new ApiException("the id employee not found");
         }
 
+        if (su.getIsApproved().equals(true)&&employee.getIsApproved().equals(true)) {
 
             employee.setSuperF(su);
             employeeRepository.save(employee);
+        } throw new ApiException("the employee not Approved");
 
     }
   public Integer sumC(Integer id){

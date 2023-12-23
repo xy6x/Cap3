@@ -33,7 +33,7 @@ public class Employee {
 
 
     private Integer countOfCarsInspected;
-    @AssertFalse
+
     private Boolean isApproved;
 
     @Column(columnDefinition = "varchar(20) not null")

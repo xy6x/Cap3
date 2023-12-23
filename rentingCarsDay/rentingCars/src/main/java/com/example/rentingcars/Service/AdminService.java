@@ -48,23 +48,23 @@ public class AdminService {
  }
 
 
- public void employeeCheck(Integer admin_id, Integer employee_id){
-     Admin admin =adminRepository.findAdminById(admin_id);
-     if (admin == null) {
-         throw new ApiException("the id admin not found");
-     }
-     Employee employee =employeeRepository.findEmployeeById(employee_id);
-         if(employee==null){
-             throw new ApiException("the id employee not found");
-         }
-         if(employee.getQualification().equals("engineer")){
-             employee.setIsApproved(true);
-             employeeRepository.save(employee);
-         }
-         else
-     throw new ApiException("employee does not conform to conditions");
-     }
-
+    public void verifyEmployee(Integer admin_id, Integer employee_id){
+        Admin admin =adminRepository.findAdminById(admin_id);
+        if (admin == null) {
+            throw new ApiException("Admin ID incorrect");
+        }
+        Employee employee =employeeRepository.findEmployeeById(employee_id);
+        if(employee==null){
+            throw new ApiException("employee ID incorrect");
+        }
+        if(employee.getQualification().equals("engineer")){
+            Boolean a =true;
+            employee.setIsApproved(a);
+            employeeRepository.save(employee);
+        }
+        else
+            throw new ApiException("the employee qualification not suitable");
+    }
 
     public void assignAdminToEmployee(Integer admin_id, Integer employee_id ){
         Admin admin=adminRepository.findAdminById(admin_id);

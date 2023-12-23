@@ -111,7 +111,6 @@ public class RentalService {
     }
     public void deleteRental(Integer rent_id,Integer user_id){
         Rental rental =rentalRepository.findRentalById(rent_id);
-        User user=userRepository.findUserById(user_id);
         if (rental == null) {
             throw new ApiException("the Rental not found");
         }
